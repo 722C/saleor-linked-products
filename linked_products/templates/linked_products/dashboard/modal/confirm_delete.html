@@ -1,0 +1,28 @@
+{% extends "dashboard/base_modal.html" %}
+
+{% load i18n %}
+
+{% block form_class %}{% endblock %}
+
+{% block action_url %}
+{% url 'linked-product-dashboard-delete' pk=linked_product.pk %}
+{% endblock %}
+
+{% block title %}
+{% blocktrans trimmed context "Modal remove linked product text" %}
+  Remove linked product <strong>{{ linked_product }}</strong>?
+{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+  <div class="col s12">
+  {% blocktrans trimmed context "Modal remove linked product text" %}
+    Are you sure you want to remove linked product {{ linked_product }}?
+    <br> This set of products will no longer show up as a linked.
+  {% endblocktrans %}
+  </div>
+{% endblock content %}
+
+{% block primary_action %}
+{% trans "Remove" context "Dashboard delete action" %}
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "dashboard/base.html" %}
+{% load i18n %}
+{% load materializecss %}
+{% load staticfiles %}
+{% load utils %}
+
+{% block title %}
+  {% trans "Linked Products" context "Dashboard linked products list" %} - {{ block.super }}
+{% endblock %}
+
+{% block body_class %}body-customers{% endblock %}
+
+{% block menu_linked_products_class %}active{% endblock %}
+
+{% block header_extra %}
+  {% if perms.linked_products.edit %}
+    <div class="btn-fab-fixed">
+      <a href="{% url 'linked-product-dashboard-create' %}" class="btn-fab-default waves-effect waves-light" title="{% trans "Add linked product" context "Linked product list add button text" %}">
+        <svg data-src="{% static "dashboard/images/add.svg" %}" />
+      </a>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+  <ul class="breadcrumbs">
+    <li class="visible-s">
+      {% trans "Linked Products" context "Dashboard linked products list" %}
+    </li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col s12 l9">
+      {% if linked_products %}
+        <div class="card">
+          <div class="data-table-container">
+            <table class="bordered highlight data-table data-table-description">
+              <thead>
+                <tr>
+                  {% trans "Name" context "Dashboard linked products list table header name" as label %}
+                  {% sorting_header 'name' label %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for linked_product in linked_products %}
+                  <tr data-action-go="{% if perms.linked_products.edit %}{% url 'linked-product-dashboard-detail' pk=linked_product.pk %}{% endif %}">
+                    <td>
+                      {{ linked_product }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% paginate linked_products %}
+      {% else %}
+        {% if is_empty %}
+          {% include 'linked_products/dashboard/zero_page.html' %}
+        {% else %}
+          <div class="col s12">
+            <div class="not-found">
+              <p class="grey-text">
+                {% trans "No linked products found." context "Empty linked products table message" %}
+              </p>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="col s12 l3" id="filters">
+      {% if not is_empty %}{% filters filter_set %}{% endif %}
+    </div>
+  </div>
+{% endblock %}
+

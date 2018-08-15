@@ -1,0 +1,101 @@
+{% extends "dashboard/base.html" %}
+{% load materializecss %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %}
+  {% if linked_product.name %}
+    {{ linked_product }}
+  {% else %}
+    {% trans "Add new linked product" context "Dashboard add linked product" %}
+  {% endif %}
+  - {% trans "Linked product" context "Dashboard linked product" %} - {{ block.super }}
+{% endblock %}
+
+{% block body_class %}body-customers{% endblock %}
+
+{% block menu_linked_products_class %}active{% endblock %}
+
+{% block header_menu %}
+  {% url "linked-product-dashboard-list" as url %}
+  {% include "dashboard/includes/_back_link.html" with url=url %}
+{% endblock %}
+
+{% block breadcrumbs %}
+  <ul class="breadcrumbs breadcrumbs--history">
+    <li>
+      <a href="{% url "linked-product-dashboard-list" %}">
+        {% trans "Linked Products" context "Dashboard linked products list" %}
+      </a>
+    </li>
+    <li class="back-mobile">
+      <a href="{% url "linked-product-dashboard-list" %}">
+        <svg data-src="{% static "dashboard/images/arrow-left.svg" %}" fill="#fff" width="20px" height="20px" />
+      </a>
+    </li>
+    <li>
+      <span class="breadcrumbs--elipsed-item">
+        {% if linked_product.pk %}{{ linked_product }}{% else %}{% trans "Add new linked product" context "Dashboard add new linked product" %}{% endif %}
+      </span>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block header_extra %}
+  {% if linked_product.pk %}
+    <a class="dropdown-button right" href="#" data-activates="context-menu" data-constrainwidth="false">
+      <svg data-src="{% static "dashboard/images/more-vert.svg" %}" height="24" width="24" />
+    </a>
+    <ul id="context-menu" class="dropdown-content">
+        {% if perms.linked_products.edit %}
+      <li>
+        <a href="#base-modal" data-href="{% url 'linked-product-dashboard-delete' pk=linked_product.pk %}"
+        class="modal-trigger-custom">
+          {% trans 'Remove linked product' context 'Linked product form action' %}
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <div class="col s12 l8">
+      {% if form %}
+        <form method="post" class="card">
+          <div class="card">
+            <div class="data-table-header">
+              <h5 class="data-table-title">
+                Linked Product
+              </h5>
+            </div>
+            <div class="card-content">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col s12">
+                  {{ form|materializecss }}
+                </div>
+              </div>
+            </div>
+            {% if perms.linked_products.edit %}
+            <div class="card-action right-align">
+              <a href="{% url 'linked-product-dashboard-list' %}" class="btn-flat waves-effect">
+                {% trans "Cancel" context "Dashboard cancel action" %}
+              </a>
+              <button type="submit" class="btn waves-effect">
+                {% if linked_product.pk %}
+                  {% trans 'Update' context 'Dashboard update action' %}
+                {% else %}
+                  {% trans 'Add' context 'Dashboard add action' %}
+                {% endif %}
+              </button>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

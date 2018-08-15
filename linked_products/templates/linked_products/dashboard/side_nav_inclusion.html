@@ -1,0 +1,19 @@
+{% load i18n %}
+
+{% if perms.linked_products.view %}
+<li class="side-nav-section">
+  <p>
+    {% trans "Linked Products" context "Dashboard linked products list" %}
+  </p>
+  <ul>
+      {% if perms.linked_products.vew %}
+        <li class="{% block menu_linked_products_class %}{% endblock %}">
+          <a href="{% url 'linked-product-dashboard-list' %}">
+            {% trans "Links" context "Dashboard linked products list" %}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+</li>
+{% endif %}
+
