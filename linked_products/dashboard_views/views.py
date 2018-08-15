@@ -39,7 +39,7 @@ def linked_product_create(request):
         form.save()
         msg = pgettext_lazy('Dashboard message', 'Created linked product')
         messages.success(request, msg)
-        return redirect('popular-category-dashboard-list')
+        return redirect('linked-product-dashboard-list')
     ctx = {'linked_product': linked_product, 'form': form}
     return TemplateResponse(request, 'linked_products/dashboard/detail.html', ctx)
 
@@ -55,7 +55,7 @@ def linked_product_details(request, pk):
         msg = pgettext_lazy(
             'Dashboard message', 'Updated linked product %s') % linked_product.name
         messages.success(request, msg)
-        return redirect('popular-category-dashboard-list')
+        return redirect('linked-product-dashboard-list')
     ctx = {'linked_product': linked_product, 'form': form}
     return TemplateResponse(request, 'linked_products/dashboard/detail.html', ctx)
 
@@ -69,6 +69,6 @@ def linked_product_delete(request, pk):
         msg = pgettext_lazy('Dashboard message',
                             'Removed linked product %s') % linked_product
         messages.success(request, msg)
-        return redirect('popular-category-dashboard-list')
+        return redirect('linked-product-dashboard-list')
     return TemplateResponse(
         request, 'linked_products/dashboard/modal/confirm_delete.html', {'linked_product': linked_product})
