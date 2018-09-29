@@ -1,0 +1,11 @@
+{% load taxed_prices %}
+{% if linked_product %}
+  <div class="linked-products-wrap">
+    {% for linked_product, linked_product_availability in linked_product_products %}
+      <a class="linked-product {% if product == linked_product %}active{% endif %}" href="{{ linked_product.get_absolute_url }}">
+        <h2 class="linked-product-title">{{ linked_product|cut:linked_product_to_cut_from_name }}</h2>
+        <span class="item-price">{% price_range linked_product_availability.price_range %}</span>
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}
