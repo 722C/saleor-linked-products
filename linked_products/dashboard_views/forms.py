@@ -8,6 +8,7 @@ from ..models import LinkedProduct
 from django.urls import reverse_lazy
 from saleor.dashboard.forms import AjaxSelect2MultipleChoiceField
 
+
 class LinkedProductForm(forms.ModelForm):
     products = AjaxSelect2MultipleChoiceField(
         queryset=Product.objects.all(),
@@ -17,3 +18,8 @@ class LinkedProductForm(forms.ModelForm):
         model = LinkedProduct
         verbose_name_plural = 'linked products'
         exclude = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['products'].set_initial(self.instance.products.all())
