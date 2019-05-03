@@ -20,8 +20,7 @@ def linked_products(context, product):
     })
 
     if linked_product and request:
-        products = list(filter(lambda product: product,
-                               linked_product.products.all()))
+        products = list(linked_product.products.all())
         if len(products) > 1:
             longest_common_anchored_substring = ''
             for first, second in zip(products[0].name, products[1].name):
