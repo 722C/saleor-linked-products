@@ -1,7 +1,8 @@
 from django.utils.translation import npgettext, pgettext_lazy
-from django_filters import (CharFilter, OrderingFilter)
+from django_filters import (CharFilter, OrderingFilter, ModelChoiceFilter)
 
 from saleor.core.filters import SortedFilterSet
+from saleor.product.models import Product
 
 from ..models import LinkedProduct
 
@@ -13,6 +14,9 @@ class LinkedProductFilter(SortedFilterSet):
     name = CharFilter(
         label=pgettext_lazy('Linked product list filter label', 'Name'),
         lookup_expr='icontains')
+
+    products = ModelChoiceFilter(queryset=Product.objects.all())
+
     sort_by = OrderingFilter(
         label=pgettext_lazy('Linked product list filter label', 'Sort by'),
         fields=SORT_BY_FIELDS.keys(),
