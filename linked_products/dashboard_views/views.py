@@ -21,7 +21,7 @@ def linked_product_list(request):
     linked_product_filter = LinkedProductFilter(
         request.GET, queryset=linked_products)
     linked_products = get_paginator_items(
-        linked_products, settings.DASHBOARD_PAGINATE_BY, request.GET.get('page'))
+        linked_product_filter.qs, settings.DASHBOARD_PAGINATE_BY, request.GET.get('page'))
     # Call this so that cleaned_data exists on the filter_set
     linked_product_filter.form.is_valid()
     ctx = {
