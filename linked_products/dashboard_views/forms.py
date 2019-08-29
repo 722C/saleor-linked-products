@@ -17,10 +17,4 @@ class LinkedProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(forms.ModelForm, self).__init__(*args, **kwargs)
-        instance = kwargs.get('instance', None)
-        if instance:
-            self.fields['products'].queryset = Product.objects.annotate(link_count=Count('links')).filter(Q(link_count=0) | Q(links=instance))
-        else:
-            self.fields['products'].queryset = Product.objects.annotate(link_count=Count('links')).filter(link_count=0)
-
-
+        self.fields['products'].queryset = Product.objects.annotate(link_count=Count('links')).all()
