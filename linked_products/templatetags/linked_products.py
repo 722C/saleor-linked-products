@@ -22,7 +22,7 @@ def linked_products(context, product):
     if linked_product and request:
         products = set()
         for p in product.links.all():
-            products = products | set(filter(lambda product: product, p.products.all()))
+            products = products | set(filter(lambda product: product, p.products.available_products() if not request.user.is_staff else p.products.all()))
         products = list(products)
 
         if len(products) > 1:
@@ -40,5 +40,8 @@ def linked_products(context, product):
                 'linked_product_to_cut_from_name':
                 longest_common_anchored_substring,
             })
-
+        else:
+            context.update({
+                'linked_product_products': [],
+            })
     return context
