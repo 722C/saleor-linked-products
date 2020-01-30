@@ -22,7 +22,7 @@ def linked_products(context, product):
     if linked_product and request:
         products = set()
         for p in product.links.all():
-            products = products | set(filter(lambda product: product, p.products.available_products() if not request.user.is_staff else p.products.all()))
+            products = products | set(filter(lambda product: product and (product.is_in_stock() or request.user.is_staff), p.products.all()))
         products = list(products)
 
         if len(products) > 1:
