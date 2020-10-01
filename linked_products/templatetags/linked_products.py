@@ -34,7 +34,7 @@ def linked_products(context, product):
                     break
             products_and_availability = list(products_with_availability(
                 products, request.discounts, request.taxes,
-                request.currency))
+                request.currency, price_range=False))
             products_and_availability = list(filter(lambda p: p[1].available, products_and_availability))
             context.update({
                 'linked_product_products': products_and_availability,
